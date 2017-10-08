@@ -2,8 +2,20 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "AWS CloudFormation Template ElasticBeanstalk_Simple: Configure and launch an Symfony AWS Elastic Beanstalk application that connects to an Amazon RDS database instance. Monitoring is setup on the database. **WARNING** This template creates one or more Amazon EC2 instances and an Amazon Relational Database Service database instance. You will be billed for the AWS resources used if you create a stack from this template.",
     "Parameters": {
+        "NameS3Bucket": {
+            "NoEcho": "false",
+            "Type": "String",
+            "Description": "Name of the bucket where you stored the zip file",
+            "MinLength": "1"
+            },
+        "NameS3Key": {
+            "NoEcho": "false",
+            "Type": "String",
+            "Description": "Name of the zip file",
+            "MinLength": "1"
+        },
         "DBUser": {
-            "NoEcho": "true",
+            "NoEcho": "false",
             "Type": "String",
             "Description": "Database admin account name",
             "MinLength": "1",
@@ -12,7 +24,7 @@
             "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
         },
         "DBName": {
-            "NoEcho": "true",
+            "NoEcho": "false",
             "Type": "String",
             "Description": "Database name",
             "MinLength": "1",
@@ -198,8 +210,12 @@
                     "Ref": "SampleApplication"
                 },
                 "SourceBundle": {
-                    "S3Bucket": "aws-symfony-demo",
-                    "S3Key": "code.zip"
+                    "S3Bucket": {
+                        "Ref": "NameS3Bucket"
+                    },
+                    "S3Key": {
+                        "Ref": "NameS3Key"
+                    }
                 }
             }
         },
